@@ -24,7 +24,7 @@ export default function Index() {
 
   return (
     <ScrollView style={styles.container}>
-      <View>
+      <View style={{ marginTop: 70 }}>
         <Image
           source={require("@/assets/images/ico.png")}
           style={styles.image}
