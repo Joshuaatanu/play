@@ -32,6 +32,12 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Spacey to access your photos to update your profile picture."
+        }
       ]
     ],
     "experiments": {

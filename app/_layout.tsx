@@ -1,12 +1,36 @@
 import React from "react";
-import { Stack } from "expo-router";
-import { StatusBar } from "react-native";
+import { Stack, usePathname } from "expo-router";
+import { ThemeProvider } from "./context/ThemeContext";
+import { View } from "react-native";
+import BottomTab from "./components/BottomTab";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { AnalyticsProvider } from "./context/AnalyticsContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function RootLayout() {
+  const pathname = usePathname();
+
   return (
-    <>
-      <StatusBar backgroundColor="#FFE5F1" barStyle="dark-content" />
-      <Stack screenOptions={{ headerShown: false }} />
-    </>
+    <ProtectedRoute>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <AnalyticsProvider>
+          <ThemeProvider>
+            <View style={{ flex: 1 }}>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  animation: "slide_from_right",
+                }}
+              >
+                <Stack.Screen name="home" />
+                <Stack.Screen name="profile" />
+                <Stack.Screen name="my-events" />
+              </Stack>
+              <BottomTab activeRoute={pathname || "/home"} />
+            </View>
+          </ThemeProvider>
+        </AnalyticsProvider>
+      </GestureHandlerRootView>
+    </ProtectedRoute>
   );
 }

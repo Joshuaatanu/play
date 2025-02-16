@@ -14,4 +14,11 @@ export const SPACING = {
 
 export const FONTS = {
     regular: "libre",
+};
+
+// Add default export
+export default {
+    COLORS,
+    SPACING,
+    FONTS,
 }; 

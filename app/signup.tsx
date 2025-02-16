@@ -1,18 +1,53 @@
-import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Image,
-  View,
-  StyleSheet,
-} from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import { useTheme } from "./context/ThemeContext";
+import TextInput from "./components/TextInput";
+import Button from "./components/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUp() {
-  const [nickname, setNickname] = useState("");
-  const [name, setName] = useState("");
+  const { theme } = useTheme();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [isSignIn, setIsSignIn] = useState(false);
+  const router = useRouter();
+
+  const handleAuth = async () => {
+    // Mock authentication
+    const mockUser = {
+      token: "mock-token",
+      user: { email, username },
+    };
+    await AsyncStorage.setItem("token", mockUser.token);
+    router.push("/home");
+  };
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.background,
+      padding: 20,
+    },
+    image: {
+      width: 150,
+      height: 150,
+      marginBottom: 30,
+    },
+    title: {
+      fontSize: 24,
+      fontFamily: "LibreBaskerville-Regular",
+      color: theme.text,
+      marginBottom: 20,
+    },
+    toggleText: {
+      color: theme.primary,
+      marginTop: 20,
+    },
+  });
 
   return (
     <View style={styles.container}>
@@ -20,93 +55,43 @@ export default function SignUp() {
         source={require("@/assets/images/signup.png")}
         style={styles.image}
       />
-      <View style={{ marginTop: 20 }}>
-        <Heading size={23}>Sign Up</Heading>
-      </View>
+      <Text style={styles.title}>{isSignIn ? "Sign In" : "Sign Up"}</Text>
 
-      <View style={{ marginTop: 20, paddingLeft: 30, paddingRight: 30 }}>
-        <Text style={styles.label}>Nickname</Text>
+      {!isSignIn && (
         <TextInput
-          style={styles.input}
-          value={nickname}
-          onChangeText={setNickname}
+          placeholder="Username"
+          value={username}
+          onChangeText={setUsername}
+          style={{ width: "100%", marginBottom: 10 }}
         />
+      )}
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={{ width: "100%", marginBottom: 10 }}
+      />
+      <TextInput
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={{ width: "100%", marginBottom: 20 }}
+      />
 
-        <Text style={styles.label}>Name</Text>
-        <TextInput style={styles.input} value={name} onChangeText={setName} />
+      <Button
+        title={isSignIn ? "Sign In" : "Sign Up"}
+        onPress={handleAuth}
+        style={{ width: "100%" }}
+      />
 
-        {/* E-mail */}
-        <Text style={styles.label}>E-mail</Text>
-        <TextInput
-          style={styles.input}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-        />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => router.push("/home" as any)}
-        >
-          <Text style={styles.buttonText}>pick events </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => setIsSignIn(!isSignIn)}>
+        <Text style={styles.toggleText}>
+          {isSignIn
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Sign In"}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
-const Heading = ({ children, size }: { children: string; size: number }) => (
-  <Text style={[styles.heading, { fontSize: size }]}>{children}</Text>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FFE5F1",
-    padding: 15,
-  },
-  image: {
-    marginTop: 20,
-    width: 263,
-    height: 296,
-    alignSelf: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 20,
-  },
-  heading: {
-    textAlign: "center",
-    fontWeight: "400",
-    fontFamily: "libre",
-  },
-  label: {
-    fontFamily: "libre",
-    fontSize: 14,
-
-    marginBottom: 0,
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderBottomColor: "#A30D2D", // Dark red border
-    paddingVertical: 8,
-    fontSize: 16,
-    marginBottom: 20,
-  },
-  button: {
-    backgroundColor: "#a61e4d",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-    width: 240,
-    height: 67,
-    padding: 10,
-    borderRadius: 10,
-    alignSelf: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 20,
-  },
-});

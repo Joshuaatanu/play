@@ -1,24 +1,24 @@
 import React from "react";
-import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Image, StyleSheet } from "react-native";
+import { useTheme } from "../context/ThemeContext";
+import BackButton from "./BackButton";
 
 interface HeaderProps {
-  onMenuPress: () => void;
-  profileImage: any; // Allow require() image sources
+  profileImage: any;
+  showBackButton?: boolean;
+  onBackPress?: () => void;
 }
 
-export default function Header({ onMenuPress, profileImage }: HeaderProps) {
+export default function Header({
+  profileImage,
+  showBackButton = false,
+  onBackPress,
+}: HeaderProps) {
   return (
     <View style={styles.container}>
-      {/* Header Section */}
       <View style={styles.header}>
-        {/* Hamburger Menu */}
-        <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
-          <Ionicons name="menu" size={28} color="#A30D2D" />
-        </TouchableOpacity>
-
-        {/* Profile Picture */}
         <Image source={profileImage} style={styles.profileImage} />
+        {showBackButton && onBackPress && <BackButton onPress={onBackPress} />}
       </View>
     </View>
   );
@@ -31,15 +31,14 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
-  },
-  menuButton: {
-    padding: 10,
+    paddingHorizontal: 15,
   },
   profileImage: {
     width: 40,
     height: 40,
-    borderRadius: 8, // Small border radius for square shape
+    borderRadius: 8,
+    marginRight: 10,
   },
 });

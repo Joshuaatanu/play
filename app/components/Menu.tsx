@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 type MenuProps = {
   isVisible: boolean;
@@ -14,6 +14,8 @@ type MenuProps = {
 };
 
 export default function Menu({ isVisible, onClose }: MenuProps) {
+  const router = useRouter();
+
   if (!isVisible) return null;
 
   const menuItems = [
@@ -31,7 +33,7 @@ export default function Menu({ isVisible, onClose }: MenuProps) {
             key={item.label}
             style={styles.menuItem}
             onPress={() => {
-              router.push(item.route as any);
+              router.push(item.route);
               onClose();
             }}
           >
