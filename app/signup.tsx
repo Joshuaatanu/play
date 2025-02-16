@@ -45,7 +45,7 @@ export default function SignUp() {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => router.push("home")}
+          onPress={() => router.push("/home" as any)}
         >
           <Text style={styles.buttonText}>pick events </Text>
         </TouchableOpacity>

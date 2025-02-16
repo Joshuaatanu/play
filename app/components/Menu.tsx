@@ -4,7 +4,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Animated,
+  Pressable,
 } from "react-native";
 import { router } from "expo-router";
 
@@ -14,32 +14,32 @@ type MenuProps = {
 };
 
 export default function Menu({ isVisible, onClose }: MenuProps) {
-  const menuItems = [
-    { label: "Profile", onPress: () => router.push("/profile") },
-    { label: "My Events", onPress: () => router.push("/my-events") },
-    { label: "Settings", onPress: () => router.push("/settings") },
-    { label: "Sign Out", onPress: () => router.push("/") },
-  ];
-
   if (!isVisible) return null;
 
+  const menuItems = [
+    { label: "Profile", route: "profile" },
+    { label: "My Events", route: "my-events" },
+    { label: "Settings", route: "settings" },
+    { label: "Sign Out", route: "/" },
+  ];
+
   return (
-    <View style={styles.overlay}>
-      <View style={styles.menu}>
+    <Pressable style={styles.overlay} onPress={onClose}>
+      <Pressable style={styles.menu}>
         {menuItems.map((item) => (
           <TouchableOpacity
             key={item.label}
             style={styles.menuItem}
             onPress={() => {
-              item.onPress();
+              router.push(item.route as any);
               onClose();
             }}
           >
             <Text style={styles.menuText}>{item.label}</Text>
           </TouchableOpacity>
         ))}
-      </View>
-    </View>
+      </Pressable>
+    </Pressable>
   );
 }
 

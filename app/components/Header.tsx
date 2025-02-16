@@ -1,13 +1,13 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface HeaderProps {
   onMenuPress: () => void;
-  profileImage: string;
+  profileImage: any; // Allow require() image sources
 }
 
-const Header: React.FC<HeaderProps> = ({ onMenuPress, profileImage }) => {
+export default function Header({ onMenuPress, profileImage }: HeaderProps) {
   return (
     <View style={styles.container}>
       {/* Header Section */}
@@ -18,14 +18,11 @@ const Header: React.FC<HeaderProps> = ({ onMenuPress, profileImage }) => {
         </TouchableOpacity>
 
         {/* Profile Picture */}
-        <Image
-          source={require("@/assets/images/signup.png")}
-          style={styles.profileImage}
-        />
+        <Image source={profileImage} style={styles.profileImage} />
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -46,5 +43,3 @@ const styles = StyleSheet.create({
     borderRadius: 8, // Small border radius for square shape
   },
 });
-
-export default Header;
